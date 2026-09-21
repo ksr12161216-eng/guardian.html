@@ -126,3 +126,51 @@
               </div></div>
               <div class="idea-group"><h4><span>3.</span> 마지막 3초, 무엇을 기억시킬까?</h4><div class="idea-options">
                 <button class="idea-option" data-kind="memory" data-label="한 줄 구호"><strong>📣 8단어 이내 구호</strong><small>짧고 따라 하기 쉬운 마지막 한마디를 함께 외쳐요.</small></button>
+                <button class="idea-option" data-kind="memory" data-label="팀 포즈"><strong>✨ Cleaner 팀 포즈</strong><small>가치를 나타내는 동작으로 멈추고 화면을 마무리해요.</small></button>
+                <button class="idea-option" data-kind="memory" data-label="핵심 행동 반복"><strong>🔂 핵심 행동 두 번</strong><small>확인하기·허락 묻기 같은 행동을 리듬 있게 반복해요.</small></button>
+                <button class="idea-option" data-kind="memory" data-label="가치 공개"><strong>🏷️ 마지막에 가치 공개</strong><small>영상 끝에만 가치 이름을 들어 올려 친구가 답을 확인하게 해요.</small></button>
+              </div></div>
+              <div class="idea-summary" id="ideaSummary">세 단계의 표현 방법을 하나씩 선택해 보세요.</div>
+              <button class="finish-btn" id="finishMission1" type="button" disabled>선택 완료 · 제작 카드로 이동</button>
+              <div class="mission-done" id="mission1Done">✓ MISSION 1 설계 준비 완료 — 제작 카드에 위험·반전·변화 장면을 그려주세요!</div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="controls">
+      <div><div class="progress" aria-label="인트로 진행 단계"></div><div class="hint" style="margin-top:9px">← → 키로도 장면을 넘길 수 있어요</div></div>
+      <div class="actions"><button class="nav-btn sound" id="soundBtn" type="button" aria-label="배경음과 효과음 켜기" title="배경음 켜기">🔇</button><button class="nav-btn" id="prevBtn" type="button">이전</button><button class="nav-btn" id="nextBtn" type="button">다음</button></div>
+    </footer>
+  </div>
+  <script>
+    const scenes=[...document.querySelectorAll('.scene')],progress=document.querySelector('.progress'),prevBtn=document.querySelector('#prevBtn'),nextBtn=document.querySelector('#nextBtn'),soundBtn=document.querySelector('#soundBtn');let current=0,soundOn=false,audio,bgmMaster,bgmTimer,bgmStep=0,selectedTeam=null;
+    const crewValues=[
+      {emoji:'🔎',name:'검증',risk:'AI가 틀린 정보를 진짜처럼 말해도 그대로 믿는 상황',question:'“AI가 말했다고 모두 사실일까?”',action:'다른 자료와 비교하고 출처를 한 번 더 확인해요.',seeds:['의심하기','두 자료 비교','출처 찾기','다시 확인'],challenge:'‘한 번 더 확인하는 모습’을 15초 안에 어떻게 보여줄까요?'},
+      {emoji:'⚖️',name:'공정',risk:'AI의 편견이나 고정관념으로 사람을 판단하는 상황',question:'“모두에게 같은 기회와 기준이 적용됐을까?”',action:'한쪽 답만 따르지 않고 여러 관점과 사람의 입장을 살펴봐요.',seeds:['입장 바꾸기','여러 관점','같은 기준','편견 깨기'],challenge:'‘누구에게나 공정한 선택’을 어떻게 보여줄까요?'},
+      {emoji:'🧠',name:'판단',risk:'생각과 결정을 모두 AI에게 맡기고 그대로 따르는 상황',question:'“도움을 받은 뒤 최종 결정은 누가 해야 할까?”',action:'AI의 제안은 참고하되 이유를 따져 보고 내가 최종 결정해요.',seeds:['멈춰 생각하기','장단점 비교','내 이유 말하기','최종 선택'],challenge:'‘AI가 아닌 내가 결정하는 순간’을 어떻게 보여줄까요?'},
+      {emoji:'🤝',name:'존중',risk:'친구의 사진·목소리·작품을 허락 없이 AI에 사용하는 상황',question:'“AI를 쓰기 전에 누구의 마음과 권리를 생각해야 할까?”',action:'다른 사람의 자료를 사용하기 전에 먼저 설명하고 동의를 구해요.',seeds:['먼저 물어보기','동의 기다리기','싫다는 뜻 존중','다른 방법 찾기'],challenge:'‘AI보다 사람을 먼저 생각하는 행동’을 어떻게 보여줄까요?'},
+      {emoji:'🔒',name:'보호',risk:'이름·사진·연락처 같은 개인정보를 AI에 함부로 입력하는 상황',question:'“이 정보는 꼭 입력해야 할까?”',action:'입력하기 전에 개인정보인지 확인하고 필요한 정보만 사용해요.',seeds:['입력 전 멈춤','개인정보 가리기','필요한 것만','삭제하기'],challenge:'‘소중한 정보를 지키는 순간’을 어떻게 보여줄까요?'},
+      {emoji:'🛡️',name:'책임',risk:'AI가 만든 결과를 확인하지 않고 내 것처럼 제출하는 상황',question:'“AI를 사용한 결과에 누가 책임져야 할까?”',action:'AI 사용 사실과 출처를 밝히고 결과를 직접 검토하고 수정해요.',seeds:['AI 사용 밝히기','출처 표시','틀린 점 수정','결과 책임지기'],challenge:'‘AI를 사용한 결과에 책임지는 모습’을 어떻게 보여줄까요?'}
+    ];
+    const ideaSelections={hook:null,show:null,memory:null};
+    scenes.forEach((_,i)=>{const b=document.createElement('button');b.className='step';b.type='button';b.setAttribute('aria-label',`${i+1}번째 장면`);b.onclick=()=>show(i);progress.appendChild(b)});
+    function getAudio(){audio??=new(window.AudioContext||window.webkitAudioContext)();return audio}
+    function tone(freq=520,duration=.08){if(!soundOn)return;const ctx=getAudio(),o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.045,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g).connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration)}
+    function ambientPulse(){if(!soundOn||!bgmMaster)return;const ctx=getAudio(),now=ctx.currentTime,roots=[110,146.83,130.81,164.81],root=roots[bgmStep++%roots.length];[[root,'sine',.018],[root*1.5,'triangle',.008]].forEach(([freq,type,level])=>{const o=ctx.createOscillator(),g=ctx.createGain(),f=ctx.createBiquadFilter();o.type=type;o.frequency.setValueAtTime(freq,now);f.type='lowpass';f.frequency.value=620;g.gain.setValueAtTime(.001,now);g.gain.exponentialRampToValueAtTime(level,now+.35);g.gain.exponentialRampToValueAtTime(.001,now+2.25);o.connect(f).connect(g).connect(bgmMaster);o.start(now);o.stop(now+2.3)});const ping=ctx.createOscillator(),pg=ctx.createGain();ping.type='sine';ping.frequency.value=root*4;pg.gain.setValueAtTime(.001,now+.7);pg.gain.exponentialRampToValueAtTime(.006,now+.74);pg.gain.exponentialRampToValueAtTime(.001,now+1.45);ping.connect(pg).connect(bgmMaster);ping.start(now+.7);ping.stop(now+1.5)}
+    async function startBgm(){const ctx=getAudio();if(ctx.state==='suspended')await ctx.resume();bgmMaster=ctx.createGain();bgmMaster.gain.setValueAtTime(.001,ctx.currentTime);bgmMaster.gain.exponentialRampToValueAtTime(.7,ctx.currentTime+1.2);bgmMaster.connect(ctx.destination);ambientPulse();bgmTimer=setInterval(ambientPulse,2400)}
+    function stopBgm(){if(bgmTimer)clearInterval(bgmTimer);bgmTimer=null;if(!bgmMaster||!audio)return;const old=bgmMaster;old.gain.cancelScheduledValues(audio.currentTime);old.gain.setValueAtTime(Math.max(old.gain.value,.001),audio.currentTime);old.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.65);setTimeout(()=>old.disconnect(),750);bgmMaster=null}
+    function show(index){current=Math.max(0,Math.min(scenes.length-1,index));scenes.forEach((s,i)=>s.classList.toggle('active',i===current));[...progress.children].forEach((s,i)=>s.classList.toggle('active',i===current));prevBtn.disabled=current===0;nextBtn.disabled=current===scenes.length-1||(current===5&&selectedTeam===null);nextBtn.textContent=current===scenes.length-1?'MISSION 1':'다음';tone(current===3?760:520,.1)}
+    prevBtn.onclick=()=>show(current-1);nextBtn.onclick=()=>show(current+1);soundBtn.onclick=async()=>{soundOn=!soundOn;soundBtn.textContent=soundOn?'🔊':'🔇';soundBtn.setAttribute('aria-label',soundOn?'배경음과 효과음 끄기':'배경음과 효과음 켜기');soundBtn.title=soundOn?'배경음 끄기':'배경음 켜기';if(soundOn){await startBgm();tone(660,.12)}else stopBgm()};
+    document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();show(current+1)}if(e.key==='ArrowLeft')show(current-1)});
+    document.querySelector('#openMission').onclick=()=>{document.querySelector('#ready').classList.add('show');tone(880,.18);setTimeout(()=>{tone(1100,.22);show(4)},650)};
+    document.querySelector('#teamOpenBtn').onclick=()=>show(5);
+    function loadCrew(index){selectedTeam=index;const v=crewValues[index],no=String(index+1).padStart(2,'0');document.querySelector('#crewLabel').textContent=`CREW ${no} · CLEANER VALUE ACCESS GRANTED`;document.querySelector('#valueCrew').textContent=`CREW ${no}`;document.querySelector('#valueEmoji').textContent=v.emoji;document.querySelector('#valueName').textContent=v.name;document.querySelector('#valueRisk').textContent=v.risk;document.querySelector('#valueQuestion').textContent=v.question;document.querySelector('#valueAction').textContent=v.action;document.querySelector('#valueSeeds').innerHTML=v.seeds.map(s=>`<span class="seed">${s}</span>`).join('');document.querySelector('#challengeTitle').textContent=`${v.emoji} ${v.name}을 행동으로!`;document.querySelector('#challengeText').textContent=v.challenge;Object.keys(ideaSelections).forEach(k=>ideaSelections[k]=null);document.querySelectorAll('.idea-option').forEach(b=>b.classList.remove('selected'));document.querySelector('#mission1Done').classList.remove('show');updateIdeaSummary();show(6)}
+    document.querySelectorAll('.team-card').forEach(card=>card.onclick=()=>loadCrew(Number(card.dataset.team)));
+    function updateIdeaSummary(){const summary=document.querySelector('#ideaSummary'),finish=document.querySelector('#finishMission1'),values=Object.values(ideaSelections);if(values.every(Boolean)){summary.innerHTML=`우리 팀의 표현 조합: <strong>${values.join(' + ')}</strong><br>이제 이 조합을 위험 → 반전 → 변화의 세 장면으로 바꾸세요.`;finish.disabled=false}else{const left=values.filter(Boolean).length;summary.textContent=left?`${left}/3 선택 완료 — 남은 단계도 선택해 보세요.`:'세 단계의 표현 방법을 하나씩 선택해 보세요.';finish.disabled=true}}
+    document.querySelectorAll('.idea-option').forEach(btn=>btn.onclick=()=>{const kind=btn.dataset.kind;document.querySelectorAll(`.idea-option[data-kind="${kind}"]`).forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');ideaSelections[kind]=btn.dataset.label;updateIdeaSummary();tone(620+Object.values(ideaSelections).filter(Boolean).length*90,.1)});
+    document.querySelector('#finishMission1').onclick=()=>{document.querySelector('#mission1Done').classList.add('show');tone(880,.16);setTimeout(()=>tone(1174,.24),150)};
+    show(0);
+  </script>
+</body>
+</html>
