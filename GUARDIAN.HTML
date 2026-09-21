@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <title>PROJECT AL-P — AI 윤리 CREW ‘Cleaner’</title>
+  <meta name="description" content="PROJECT AL-P 2차시 AI 윤리 CREW ‘Cleaner’ 인트로">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307111f'/%3E%3Cpath d='M32 8 52 16v15c0 13-8 21-20 26C20 52 12 44 12 31V16Z' fill='none' stroke='%235fffe0' stroke-width='5'/%3E%3Cpath d='m22 32 7 7 14-16' fill='none' stroke='%23ffd75e' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#f8fafc;--muted:#94a3b8;--bg:#0b0f19;--panel:#151e32;--line:#23334d;--cyan:#38bdf8;--blue:#3b82f6;--purple:#c084fc;--yellow:#f59e0b;--red:#ef4444;--shadow:0 26px 80px rgba(0,0,0,.5)}
+    *{box-sizing:border-box} html,body{height:100%} body{margin:0;background:radial-gradient(circle at 50% 30%,#151e32 0,#0b0f19 52%,#070a11 100%);color:var(--ink);font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",system-ui,sans-serif;overflow:hidden}
+    button{font:inherit}.app{min-height:100%;display:grid;grid-template-rows:auto 1fr auto;position:relative;isolation:isolate}.app:before{content:"";position:absolute;inset:0;z-index:-2;background-image:linear-gradient(rgba(95,255,224,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(95,255,224,.03) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(to bottom,black,transparent 82%)}
+    .scan{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:.14;background:linear-gradient(to bottom,transparent 0,rgba(56,189,248,.18) 50%,transparent 54%);background-size:100% 10px;mix-blend-mode:screen}.topbar,.controls{display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,4vw,58px);gap:18px}.brand{font-size:.82rem;letter-spacing:.22em;font-weight:800}.brand b{background:linear-gradient(90deg,#60a5fa,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}.system{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:.78rem;letter-spacing:.12em}.dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 14px #10b981;animation:pulse 1.8s infinite}
+    main{position:relative;min-height:0;display:grid;place-items:center;padding:12px clamp(18px,5vw,72px)}.scene{position:absolute;width:min(1050px,92vw);height:min(650px,72vh);display:grid;place-items:center;opacity:0;visibility:hidden;transform:translateY(14px) scale(.99);transition:opacity .65s ease,transform .65s ease,visibility .65s}.scene.active{opacity:1;visibility:visible;transform:none}.eyebrow{margin:0 0 16px;color:var(--cyan);font-weight:800;font-size:.83rem;letter-spacing:.22em}.hero{text-align:center}.hero h1,.mission h1{margin:0;font-size:clamp(2.4rem,7vw,6.8rem);line-height:.95;letter-spacing:-.055em}.hero h1 span{display:block;color:var(--cyan);text-shadow:0 0 34px rgba(95,255,224,.35)}.lead{margin:24px auto 0;color:#c9deeb;font-size:clamp(1.05rem,2.2vw,1.45rem);line-height:1.65;max-width:650px;word-break:keep-all}.terminal{margin:25px auto 0;width:min(570px,90vw);text-align:left;padding:16px 19px;border:1px solid var(--line);border-radius:12px;background:rgba(2,9,17,.72);color:#87f9de;font:600 .8rem/1.8 ui-monospace,SFMono-Regular,Menlo,monospace;box-shadow:inset 0 0 30px rgba(95,255,224,.025)}
+    .alp{position:relative;width:190px;height:190px;margin:0 auto 32px;display:grid;place-items:center;border:3px solid var(--blue);border-radius:50%;background:#1e293b;box-shadow:0 0 40px rgba(59,130,246,.32),inset 0 0 38px rgba(59,130,246,.08);animation:float 3s ease-in-out infinite}.alp:before,.alp:after{content:"";position:absolute;border:1px solid rgba(56,189,248,.22);inset:-18px;border-radius:50%;animation:orbit 8s linear infinite}.alp:after{inset:-37px;border-style:dashed;animation-duration:16s;animation-direction:reverse}.face{font-size:5rem;filter:drop-shadow(0 0 18px rgba(59,130,246,.38))}.clean-badge{position:absolute;right:-28px;bottom:17px;padding:8px 12px;background:#10b981;color:white;border-radius:999px;font-size:.72rem;font-weight:900;letter-spacing:.12em;box-shadow:0 0 25px rgba(16,185,129,.32)}
+    .signals{width:min(820px,94vw)}.signals h2,.question h2{margin:0 0 26px;text-align:center;font-size:clamp(1.7rem,4vw,3.4rem);letter-spacing:-.04em}.message-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.bubble{position:relative;min-height:145px;padding:22px;border:1px solid #1c3c50;border-radius:20px;background:linear-gradient(145deg,rgba(15,37,53,.95),rgba(7,18,30,.95));box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between}.bubble:before{content:"";position:absolute;left:21px;bottom:-9px;width:16px;height:16px;background:#0a1b29;border-right:1px solid #1c3c50;border-bottom:1px solid #1c3c50;transform:rotate(45deg)}.bubble p{margin:0;font-size:clamp(1rem,2vw,1.22rem);font-weight:700;line-height:1.5;word-break:keep-all}.tag{align-self:flex-start;color:var(--red);font:700 .71rem ui-monospace,monospace;letter-spacing:.1em}.question{text-align:center}.question .prompt{font-size:clamp(2rem,5.5vw,5rem);max-width:900px;line-height:1.15;margin:0 auto;letter-spacing:-.055em;word-break:keep-all}.question .prompt b{color:var(--yellow)}.question .sub{color:var(--muted);margin-top:28px;font-size:1.05rem}.mission{text-align:center;width:min(940px,94vw)}.alert{display:inline-flex;align-items:center;gap:10px;color:var(--red);border:1px solid rgba(255,94,114,.45);background:rgba(255,94,114,.08);padding:10px 16px;border-radius:999px;font:800 .78rem ui-monospace,monospace;letter-spacing:.12em;animation:alert 1.2s infinite}.mission h1{margin-top:25px;font-size:clamp(2.5rem,7.5vw,6.6rem)}.mission h1 span{display:block;color:var(--cyan)}.mission .brief{margin:24px auto 30px;color:#c9deeb;font-size:clamp(1rem,2.2vw,1.35rem);line-height:1.7}.open-btn{position:relative;border:0;border-radius:16px;padding:17px 28px;background:var(--cyan);color:#02100d;font-weight:950;letter-spacing:.06em;cursor:pointer;box-shadow:0 0 35px rgba(95,255,224,.28);transition:.2s}.open-btn:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(95,255,224,.4)}.open-btn:focus-visible,.nav-btn:focus-visible{outline:3px solid white;outline-offset:4px}.open-btn small{display:block;font-weight:700;opacity:.65;font-size:.68rem;margin-top:5px}.ready{display:none;margin-top:20px;color:var(--yellow);font-weight:800}.ready.show{display:block;animation:rise .5s both}
+    .controls{padding-top:10px}.progress{display:flex;gap:7px}.step{width:34px;height:3px;border:0;padding:0;border-radius:5px;background:#264050;cursor:pointer}.step.active{background:var(--cyan);box-shadow:0 0 12px rgba(95,255,224,.4)}.actions{display:flex;gap:9px}.nav-btn{border:1px solid var(--line);background:rgba(7,20,32,.8);color:var(--ink);border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:750}.nav-btn:hover{border-color:#3d6a80}.nav-btn[disabled]{opacity:.35;cursor:not-allowed}.hint{color:#668294;font-size:.76rem}.sound{min-width:44px}
+    /* 1차시 클린 AI 리부트의 시각 언어를 이어받는 Cleaner 테마 */
+    .hero h1 span,.mission h1 span{background:linear-gradient(90deg,#60a5fa,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+    .bubble{border:2px solid var(--line);background:var(--panel)}
+    .bubble:before{background:var(--panel);border-color:var(--line)}
+    .open-btn{border-radius:10px;background:var(--blue);color:#fff;box-shadow:0 0 35px rgba(59,130,246,.28)}
+    .open-btn:hover{box-shadow:0 0 50px rgba(59,130,246,.4)}
+    .ready{color:#34d399}.nav-btn{background:#1e293b;border-color:var(--line);border-radius:10px}
+    @keyframes pulse{50%{opacity:.35;transform:scale(.8)}}@keyframes float{50%{transform:translateY(-8px)}}@keyframes orbit{to{transform:rotate(360deg)}}@keyframes alert{50%{box-shadow:0 0 28px rgba(255,94,114,.15)}}@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+    @media(max-width:720px){.system,.hint{display:none}.scene{height:76vh}.message-grid{grid-template-columns:1fr}.bubble{min-height:96px}.signals h2{margin-bottom:15px}.alp{width:150px;height:150px;margin-bottom:25px}.face{font-size:4rem}.clean-badge{right:-15px}.controls{padding-bottom:14px}.hero h1,.mission h1{line-height:1.02}.terminal{font-size:.7rem}.bubble:nth-child(3){display:none}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="scan" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="brand">PROJECT <b>AL-P</b> / CLEANER</div>
+      <div class="system"><span class="dot"></span><span>CLASSROOM LINK ACTIVE</span></div>
+    </header>
+    <main aria-live="polite">
+      <section class="scene active" data-scene="0">
+        <div class="hero">
+          <div class="alp" aria-label="정화된 AL-P"><span class="face">😎</span><span class="clean-badge">CLEAN</span></div>
+          <p class="eyebrow">CLEAN AI REBOOT · CLEANER MODE</p>
+          <h1>AI 윤리 CREW<span>‘Cleaner’ 접속!</span></h1>
+          <p class="lead">MASTER 수사관들, 지난 시간 너희는 6개의 사건을 해결하고 나를 구해냈어.<br>하지만 새로운 신호가 감지됐어.</p>
+          <div class="terminal">&gt; AL-P STATUS ........ CLEAN<br>&gt; ETHICS CORE ........ 6/6 RESTORED<br>&gt; EXTERNAL SIGNAL .... DETECTED</div>
+        </div>
+      </section>
+      <section class="scene" data-scene="1">
+        <div class="signals">
+          <p class="eyebrow" style="text-align:center">INCOMING SCHOOL SIGNALS</p>
+          <h2>학교에서 이런 메시지가 도착했어.</h2>
+          <div class="message-grid">
+            <article class="bubble"><span class="tag">SIGNAL 01</span><p>“AI가 알려준 건<br>다 맞는 거 아니야?”</p></article>
+            <article class="bubble"><span class="tag">SIGNAL 02</span><p>“친구 사진 정도는<br>AI에 넣어도 괜찮잖아?”</p></article>
+            <article class="bubble"><span class="tag">SIGNAL 03</span><p>“숙제는 AI가<br>다 해주면 편한데?”</p></article>
+          </div>
+        </div>
+      </section>
+      <section class="scene" data-scene="2">
+        <div class="question">
+          <p class="eyebrow">AL-P IS THINKING…</p>
+          <p class="prompt">“그렇다면…<br><b>나만 CLEAN해지면</b><br>충분한 걸까?”</p>
+          <p class="sub">우리가 알아낸 AI 윤리, 다른 친구들도 알고 있을까요?</p>
+        </div>
+      </section>
+      <section class="scene" data-scene="3">
+        <div class="mission">
+          <div class="alert">● NEW MISSION DETECTED</div>
+          <h1>CLEAN AI를<span>학교 전체로 확산하라!</span></h1>
+          <p class="brief">긴 설명은 필요 없어.<br><strong>우리의 행동을 보여주는 15초면 충분해.</strong></p>
+          <button class="open-btn" id="openMission" type="button">MISSION 1 OPEN<small>가치를 행동으로 · 15초를 설계하라</small></button>
+          <div class="ready" id="ready">✓ CLEANER CREW ACCESS GRANTED — 제작 카드를 펼쳐주세요.</div>
+        </div>
+      </section>
+    </main>
+    <footer class="controls">
+      <div><div class="progress" aria-label="인트로 진행 단계"></div><div class="hint" style="margin-top:9px">← → 키로도 장면을 넘길 수 있어요</div></div>
+      <div class="actions"><button class="nav-btn sound" id="soundBtn" type="button" aria-label="효과음 켜기">🔇</button><button class="nav-btn" id="prevBtn" type="button">이전</button><button class="nav-btn" id="nextBtn" type="button">다음</button></div>
+    </footer>
+  </div>
+  <script>
+    const scenes=[...document.querySelectorAll('.scene')],progress=document.querySelector('.progress'),prevBtn=document.querySelector('#prevBtn'),nextBtn=document.querySelector('#nextBtn'),soundBtn=document.querySelector('#soundBtn');let current=0,soundOn=false,audio;
+    scenes.forEach((_,i)=>{const b=document.createElement('button');b.className='step';b.type='button';b.setAttribute('aria-label',`${i+1}번째 장면`);b.onclick=()=>show(i);progress.appendChild(b)});
+    function tone(freq=520,duration=.08){if(!soundOn)return;audio??=new(window.AudioContext||window.webkitAudioContext)();const o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(.05,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+duration);o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+duration)}
+    function show(index){current=Math.max(0,Math.min(scenes.length-1,index));scenes.forEach((s,i)=>s.classList.toggle('active',i===current));[...progress.children].forEach((s,i)=>s.classList.toggle('active',i===current));prevBtn.disabled=current===0;nextBtn.disabled=current===scenes.length-1;nextBtn.textContent=current===scenes.length-1?'미션 도착':'다음';tone(current===3?760:520,.1)}
+    prevBtn.onclick=()=>show(current-1);nextBtn.onclick=()=>show(current+1);soundBtn.onclick=()=>{soundOn=!soundOn;soundBtn.textContent=soundOn?'🔊':'🔇';soundBtn.setAttribute('aria-label',soundOn?'효과음 끄기':'효과음 켜기');tone(660,.12)};
+    document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();show(current+1)}if(e.key==='ArrowLeft')show(current-1)});
+    document.querySelector('#openMission').onclick=()=>{document.querySelector('#ready').classList.add('show');tone(880,.18);setTimeout(()=>tone(1100,.22),130)};
+    show(0);
+  </script>
+</body>
+</html>
